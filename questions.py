@@ -1,10 +1,8 @@
-import time
 import shower
 import validators
+import animated
 
 from city import City
-
-
 
 def has_visa() -> bool:
     while True:
@@ -17,10 +15,7 @@ def has_visa() -> bool:
         elif question == "2":
             return False
         
-        print("por favor, ingrese un dato válido...\n")
-        time.sleep(2)
-        print("Cargando pregunta...\n")
-        time.sleep(3)
+        animated.animated_message("por favor, ingrese un dato válido")        
 
 def select_origin(cities: list[City]):
     return select_a_city("la ciudad origen:", cities)
@@ -43,7 +38,7 @@ def select_a_city(message: str, cities: list[City]):
             
 
         except:
-            print("Debe escribir un numero entero")
+            print("Debe escribir un numero entero dentro del rango que se le indica\n")
 
 def is_shortest_route():
     while True:
@@ -56,12 +51,12 @@ def is_shortest_route():
         elif question == "2":
             return False
         
-        print("Seleccione una de las dos opciones...\n")
-        time.sleep(4)
+        animated.animated_message("Seleccione una de las dos opciones")
 
 def continue_program(question: str):
+    message = question
     while True:
-        question = input(f'''\n{question}
+        question = input(f'''\n{message}
 1. Si
 2.- No
 > ''')

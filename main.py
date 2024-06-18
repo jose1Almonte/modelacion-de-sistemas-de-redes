@@ -56,21 +56,18 @@
 # y responder si el pasajero tiene visa o no … el programa calculará la ruta más barata o bien
 # la que tenga la menor cantidad de escalas y se la mostrará.
 
-import time
 from city import City
 from travel import Travel
 import search_alghoritms
 import questions
 import organizer
+import animated
 
 def main():
     cities = City.loader()
     travels = Travel.loader()
     run = True
-    for i in range(10):
-        print(f"Bienvenidos a mi sistema 🤨 METRO TRAVEL{"."*i}", end = "\r")
-        time.sleep(0.5)
-    print("\n")
+    animated.animated_message("Bienvenidos a mi sistema 🤨 METRO TRAVEL")
     
     while run:
         has_visa = questions.has_visa()
@@ -82,17 +79,17 @@ def main():
         destination = questions.select_destination(cities_to_apply)
         cities_to_apply.append(origin)
 
-        origin = origin.code
-        destination = destination.code
+        origin_code = origin.code
+        destination_code = destination.code
         bucle = True
         while bucle:
             if questions.is_shortest_route():
-                shortest_path_cost, shortest_path_route = search_alghoritms.dijkstra(cities_to_apply, travels_to_apply, origin, destination)
-                print(f"La ruta más barata desde {origin} hasta {destination} cuesta {shortest_path_cost} y es {shortest_path_route}")
+                shortest_path_cost, shortest_path_route = search_alghoritms.dijkstra(cities_to_apply, travels_to_apply, origin_code, destination_code)
+                print(f"La ruta más barata desde {origin.name} ({origin.code}) hasta {destination.name} ({destination.code}) cuesta $ {shortest_path_cost} y es {shortest_path_route}")
             else:
-                hops, path = search_alghoritms.dijkstra_min_cities(cities_to_apply, travels_to_apply, origin, destination)
+                hops, path = search_alghoritms.dijkstra_min_cities(cities_to_apply, travels_to_apply, origin_code, destination_code)
                 print(f"El número mínimo de ciudades a pasar es: {hops} y la ruta es {path}")
-            bucle = not questions.continue_program("¿Quiere ver mas información?")
+            bucle = not questions.continue_program("¿Quiere ver mas información de la ruta que seleccionaste?")
         
         run = questions.continue_program("¿Terminar el programa?")
     
