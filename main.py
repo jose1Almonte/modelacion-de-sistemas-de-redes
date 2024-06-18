@@ -56,18 +56,48 @@
 # y responder si el pasajero tiene visa o no … el programa calculará la ruta más barata o bien
 # la que tenga la menor cantidad de escalas y se la mostrará.
 
+import time
 from city import City
 from travel import Travel
 import search_alghoritms
+import questions
+import organizer
 
 def main():
     cities = City.loader()
     travels = Travel.loader()
-
+    run = True
+    for i in range(10):
+        print(f"Bienvenidos a mi sistema 🤨 METRO TRAVEL{"."*i}", end = "\r")
+        time.sleep(0.5)
+    print("\n")
     
-    origin = "CCS"  # Código de la ciudad de origen
-    destination = "SBH"  # Código de la ciudad de destino
-    shortest_path_cost, shortest_path_route = search_alghoritms.dijkstra(cities, travels, origin, destination)
-    print(f"La ruta más corta desde {origin} hasta {destination} cuesta {shortest_path_cost} y es {shortest_path_route}")
+    while run:
+        has_visa = questions.has_visa()
+
+        cities_to_apply = cities.copy() if has_visa else organizer.cities_without_visa(cities)
+        travels_to_apply = travels.copy() if has_visa else organizer.travels_without_visa(organizer.cities_without_visa(cities),travels)
+        origin = questions.select_origin(cities_to_apply)
+        cities_to_apply.remove(origin)
+        destination = questions.select_destination(cities_to_apply)
+        cities_to_apply.append(origin)
+
+        origin = origin.code
+        destination = destination.code
+        bucle = True
+        while bucle:
+            if questions.is_shortest_route():
+                shortest_path_cost, shortest_path_route = search_alghoritms.dijkstra(cities_to_apply, travels_to_apply, origin, destination)
+                print(f"La ruta más barata desde {origin} hasta {destination} cuesta {shortest_path_cost} y es {shortest_path_route}")
+            else:
+                hops, path = search_alghoritms.dijkstra_min_cities(cities_to_apply, travels_to_apply, origin, destination)
+                print(f"El número mínimo de ciudades a pasar es: {hops} y la ruta es {path}")
+            bucle = not questions.continue_program("¿Quiere ver mas información?")
+        
+        run = questions.continue_program("¿Terminar el programa?")
+    
+    print("Nos vemos 😜")
+
+
 
 main()
