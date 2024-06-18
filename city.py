@@ -4,6 +4,9 @@ class City():
         self.name = name
         self.visa_required = visa_required
 
+    def __str__(self) -> str:
+        return f"code: {self.code} | name: {self.name} | VISA: {"yes" if self.visa_required else "no"}"
+
     def loader():
         data = [
             [
@@ -45,3 +48,5 @@ class City():
             new_city = City(element[0], element[1], element[2])
             cities.append(new_city)
         return cities
+    
+

@@ -56,7 +56,18 @@
 # y responder si el pasajero tiene visa o no … el programa calculará la ruta más barata o bien
 # la que tenga la menor cantidad de escalas y se la mostrará.
 
+from city import City
+from travel import Travel
+import search_alghoritms
+
 def main():
-    pass
+    cities = City.loader()
+    travels = Travel.loader()
+
+    
+    origin = "CCS"  # Código de la ciudad de origen
+    destination = "SBH"  # Código de la ciudad de destino
+    shortest_path_cost, shortest_path_route = search_alghoritms.dijkstra(cities, travels, origin, destination)
+    print(f"La ruta más corta desde {origin} hasta {destination} cuesta {shortest_path_cost} y es {shortest_path_route}")
 
 main()
