@@ -62,22 +62,13 @@ import search_alghoritms
 import questions
 import organizer
 import animated
-import txt
-
 
 def main():
-    # cities = City.loader()
-    # travels = Travel.loader()
-    cities = txt.read_cities()
-    travels = txt.read_travels()
+    cities = City.loader()
+    travels = Travel.loader()
     run = True
     animated.animated_message("Bienvenidos a mi sistema 🤨 METRO TRAVEL")
-    txt.write_travels(travels)
-    txt.write_cities(cities)
-
-    # print(len(txt.read_travels()) == len(travels))
-    # print(len(txt.read_cities()) == len(cities))
-
+    
     while run:
         has_visa = questions.has_visa()
 
