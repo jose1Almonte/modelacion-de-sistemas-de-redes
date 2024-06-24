@@ -1,0 +1,11 @@
+CCS,Caracas,False
+AUA,Aruba,True
+BON,Bonaire,True
+CUR,Curazao,True
+SXM,San Martín,True
+SDQ,Santo Domingo,True
+SBH,San Bartolomé,False
+POS,Puerto España (Trinidad),False
+BGI,Barbados,False
+FDF,Fort de France (Martinica),False
+PTP,Point a Pitre (Guadalupe),False

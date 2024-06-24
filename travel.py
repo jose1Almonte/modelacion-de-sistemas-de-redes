@@ -7,27 +7,7 @@ class Travel():
 
     @classmethod
     def loader(cls):
-        data = [
-            ["CCS", "AUA", 40.00, False],
-            ["CCS", "CUR", 35.00, False],
-            ["CCS", "BON", 60.00, False],
-            ["CCS", "SXM", 300.00, False],
-            ["AUA", "CUR", 15.00, False],
-            ["AUA", "BON", 15.00, False],
-            ["CUR", "BON", 15.00, False],
-            ["CCS", "SDQ", 180.00, False],
-            ["SDQ", "SXM", 50.00, False],
-            ["SXM", "SBH", 45.00, False],
-            ["CCS", "POS", 150.00, False],
-            ["CCS", "BGI", 180.00, False],
-            ["POS", "BGI", 35.00, False],
-            ["POS", "SXM", 90.00, False],
-            ["BGI", "SXM", 70.00, False],
-            ["POS", "PTP", 80.00, False],
-            ["POS", "FDF", 75.00, False],
-            ["PTP", "SXM", 100.00, False],
-            ["PTP", "SBH", 80.00, False],
-            ["CUR", "SXM", 80.00, False],
-            ["AUA", "SXM", 85.00, False],
-        ]
-        return [cls(element[0], element[1], element[2], element[3]) for element in data]
+        data = open("paths.txt", "r")
+        fix_data = [line.split(',') for line in data.readlines()]
+
+        return [cls(element[0], element[1], float(element[2]), element[3]) for element in fix_data]
