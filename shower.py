@@ -1,6 +1,5 @@
 from city import City
 
-
 def cities(cities: list[City]):
     index = 1
     for city in cities:

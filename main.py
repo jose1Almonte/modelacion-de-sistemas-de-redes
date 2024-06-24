@@ -56,45 +56,13 @@
 # y responder si el pasajero tiene visa o no … el programa calculará la ruta más barata o bien
 # la que tenga la menor cantidad de escalas y se la mostrará.
 
-from city import City
-from travel import Travel
-import search_alghoritms
-import questions
-import organizer
-import animated
+from interface import MetroTravelApp
+import tkinter as tk
 
 def main():
-    cities = City.loader()
-    travels = Travel.loader()
-    run = True
-    animated.animated_message("Bienvenidos a mi sistema 🤨 METRO TRAVEL")
-    
-    while run:
-        has_visa = questions.has_visa()
+    root = tk.Tk()
+    app = MetroTravelApp(root)
+    root.mainloop()
 
-        cities_to_apply = cities.copy() if has_visa else organizer.cities_without_visa(cities)
-        travels_to_apply = travels.copy() if has_visa else organizer.travels_without_visa(organizer.cities_without_visa(cities),travels)
-        origin = questions.select_origin(cities_to_apply)
-        cities_to_apply.remove(origin)
-        destination = questions.select_destination(cities_to_apply)
-        cities_to_apply.append(origin)
-
-        origin_code = origin.code
-        destination_code = destination.code
-        bucle = True
-        while bucle:
-            if questions.is_shortest_route():
-                shortest_path_cost, shortest_path_route = search_alghoritms.dijkstra(cities_to_apply, travels_to_apply, origin_code, destination_code)
-                print(f"La ruta más barata desde {origin.name} ({origin.code}) hasta {destination.name} ({destination.code}) cuesta $ {shortest_path_cost} y es {shortest_path_route}")
-            else:
-                hops, path = search_alghoritms.dijkstra_min_cities(cities_to_apply, travels_to_apply, origin_code, destination_code)
-                print(f"El número mínimo de ciudades a pasar es: {hops} y la ruta es {path}")
-            bucle = not questions.continue_program("¿Quiere ver mas información de la ruta que seleccionaste?")
-        
-        run = questions.continue_program("¿Terminar el programa?")
-    
-    print("Nos vemos 😜")
-
-
-
-main()
+if __name__ == "__main__":
+    main()
