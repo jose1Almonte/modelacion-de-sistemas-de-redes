@@ -5,7 +5,7 @@ class City():
         self.visa_required = visa_required
 
     def __str__(self) -> str:
-        return f"code: {self.code} | name: {self.name} | VISA: {"yes" if self.visa_required else "no"}"
+        return f"code: {self.code} | name: {self.name} | VISA: {'yes' if self.visa_required else 'no'}"
 
     def loader():
         data = [
