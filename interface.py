@@ -44,21 +44,21 @@ class MetroTravelApp:
         self.visa_label.pack(pady=5)
 
         self.visa_var = tk.IntVar()
-        self.visa_yes = ttk.Radiobutton(self.root, text="Sí", variable=self.visa_var, value=1, style="TRadiobutton")
-        self.visa_no = ttk.Radiobutton(self.root, text="No", variable=self.visa_var, value=0, style="TRadiobutton")
+        self.visa_yes = ttk.Radiobutton(self.root, text="Sí", variable=self.visa_var, value=1, style="TRadiobutton", command=self.update_menus)
+        self.visa_no = ttk.Radiobutton(self.root, text="No", variable=self.visa_var, value=0, style="TRadiobutton", command=self.update_menus)
         self.visa_yes.pack()
         self.visa_no.pack()
 
         self.origin_label = ttk.Label(self.root, text="Seleccione la ciudad origen:")
         self.origin_label.pack(pady=5)
         self.origin_var = tk.StringVar()
-        self.origin_menu = ttk.OptionMenu(self.root, self.origin_var, *[city.name for city in self.cities])
+        self.origin_menu = ttk.OptionMenu(self.root, self.origin_var, "")
         self.origin_menu.pack()
 
         self.destination_label = ttk.Label(self.root, text="Seleccione la ciudad destino:")
         self.destination_label.pack(pady=5)
         self.destination_var = tk.StringVar()
-        self.destination_menu = ttk.OptionMenu(self.root, self.destination_var, *[city.name for city in self.cities])
+        self.destination_menu = ttk.OptionMenu(self.root, self.destination_var, "")
         self.destination_menu.pack()
 
         self.route_type_label = ttk.Label(self.root, text="¿Qué tipo de ruta desea?")
@@ -75,6 +75,29 @@ class MetroTravelApp:
 
         self.result_label = ttk.Label(self.root, text="", wraplength=500)
         self.result_label.pack(pady=10)
+
+        # Inicializar los OptionMenus
+        self.update_menus()
+
+    def update_menus(self):
+        has_visa = self.visa_var.get() == 1
+
+        if has_visa:
+            cities = self.cities
+        else:
+            cities = organizer.cities_without_visa(self.cities)
+
+        cities_names = [city.name for city in cities]
+
+        self.origin_menu["menu"].delete(0, "end")
+        self.destination_menu["menu"].delete(0, "end")
+
+        for city_name in cities_names:
+            self.origin_menu["menu"].add_command(label=city_name, command=tk._setit(self.origin_var, city_name))
+            self.destination_menu["menu"].add_command(label=city_name, command=tk._setit(self.destination_var, city_name))
+
+        self.origin_var.set(cities_names[0] if cities_names else "")
+        self.destination_var.set(cities_names[0] if cities_names else "")
 
     def calculate_route(self):
         has_visa = self.visa_var.get() == 1
@@ -105,9 +128,10 @@ class MetroTravelApp:
             graph[travel.origin].add(travel.destination)
             graph[travel.destination].add(travel.origin)  # Añadir para caminos bidireccionales
 
+
         # Validar que los nodos de origen y destino existen en el grafo
         if origin_code not in graph or destination_code not in graph:
-            messagebox.showerror("Error", "La ciudad de destino necesita visa.")
+            messagebox.showerror("Error", "La ciudad de origen o destino no está disponible en el grafo.")
             return
 
         if route_type == 1:
